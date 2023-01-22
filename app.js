@@ -57,7 +57,18 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
   return beasts;
 }
 
-const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 20 });
+const convertNumbers = num => (num + '')
+  .split('')
+  .reverse()
+  .reduce((accumulator, currentValue, currentIndex) => 
+    (accumulator.push(currentValue), (currentIndex + 1 % 3 === 0) && accumulator.push('_'), accumulator), [])
+  .reverse()
+  .join('');
+
+const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 80 });
+
 console.group('Beasts');
+console.info('Live - ' + convertNumbers(beasts.live[0].length + beasts.live[1].length));
+console.info('Death - ' + convertNumbers(beasts.death[0].length + beasts.death[1].length));
 console.table(beasts);
 console.groupEnd('Beasts');
