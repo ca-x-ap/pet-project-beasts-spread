@@ -10,8 +10,11 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
       id0: null,
       id1: null,
       unixTime: unixTime + getNum(maxLiveTime),
+      gen: [getNum(9), getNum(9), getNum(9), getNum(9), getNum(9), getNum(9)].join(''),
     });
   }
+
+  console.table(JSON.parse(JSON.stringify(beasts)));
 
   for (let spreadCount = 0; spreadCount < spreadCountTimes /*|| beasts.live[0].length === 0 || beasts.live[1].length === 0 */; spreadCount++) {
     unixTime++;
@@ -35,6 +38,7 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
         continue;
       }
 
+      var parent = beasts.live[0][i];
       var partnerNum = getNum(beastsLive_1Copy.length - 1);
       var partnerBeast = beastsLive_1Copy[partnerNum];
       if (partnerBeast === undefined) continue;
@@ -43,12 +47,13 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
       var countOfChildren = getNum(3) + 1;
 
       for (let j = 0; j < countOfChildren; j++) {
-        var numberOfBeastList = getNum(2);
+        var numberOfBeastList = getNum(1);
         beasts.live[numberOfBeastList].push({
           id: beasts.live[numberOfBeastList].length,
-          id0: beasts.live[0][i].id,
+          id0: parent.id,
           id1: partnerBeast.id,
           unixTime: unixTime + getNum(maxLiveTime) + 1,
+          gen: parent.gen.split('').splice(0, 3).join('') + partnerBeast.gen.split('').splice(3, 6).join(''),
         });
       }
     }
@@ -65,10 +70,34 @@ const convertNumbers = num => (num + '')
   .reverse()
   .join('');
 
-const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 80 });
+const updateBeasts = () => {
+  const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 40 });
 
-console.group('Beasts');
-console.info('Live - ' + convertNumbers(beasts.live[0].length + beasts.live[1].length));
-console.info('Death - ' + convertNumbers(beasts.death[0].length + beasts.death[1].length));
-console.table(beasts);
-console.groupEnd('Beasts');
+  console.group('Beasts');
+  console.info('Live - ' + convertNumbers(beasts.live[0].length + beasts.live[1].length));
+  console.info('Death - ' + convertNumbers(beasts.death[0].length + beasts.death[1].length));
+  console.table(beasts);
+  console.groupEnd('Beasts');
+
+
+  const divs = [document.createElement('div'), document.createElement('div')];
+  divs[0].style.backgroundColor = 'green';
+  divs[1].style.backgroundColor = 'red';
+  divs[0].classList.add('container');
+  divs[1].classList.add('container');
+
+  const addOnPage = (arr, index) => arr.forEach(beast => {
+    const div = document.createElement('div');
+    div.style.backgroundColor = '#' + beast.gen;
+    div.classList.add('beast');
+    divs[index].append(div);
+  });
+
+  addOnPage(beasts.live[0].splice(0, beasts.live[0].length), 0);
+  addOnPage(beasts.live[1].splice(0, beasts.live[1].length), 1);
+
+  document.body.innerHTML = '';
+  document.body.append(...divs);
+};
+
+setInterval(() => updateBeasts(), 1000);
