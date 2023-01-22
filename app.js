@@ -46,7 +46,7 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
         var numberOfBeastList = getNum(2);
         beasts.live[numberOfBeastList].push({
           id: beasts.live[numberOfBeastList].length,
-          id0: beasts.live[0][index].id,
+          id0: beasts.live[0][i].id,
           id1: partnerBeast.id,
           unixTime: unixTime + getNum(maxLiveTime) + 1,
         });
@@ -57,7 +57,7 @@ const spread = ({ maxLiveTime, spreadCountTimes }) => {
   return beasts;
 }
 
-const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 10 });
+const beasts = spread({ maxLiveTime: 5, spreadCountTimes: 20 });
 console.group('Beasts');
 console.table(beasts);
 console.groupEnd('Beasts');
