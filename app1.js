@@ -1,36 +1,41 @@
-const spread = ({ maxLiveTime, spreadCountTimes, startCount }) => {
-  var beasts = { live: [[], []], death: [[], []] };
-  var getNum = num => Math.round(Math.random(num));
-  var unixTime = 0;
-
-  for (var i = 0; i < startCount; i++) {
+const makeStartBeasts = (array, count, time, maxTime) => {
+  for (var i = 0; i < count; i++) {
     var numberOfBeastList = getNum(1);
-    beasts.live[numberOfBeastList].push({
-      id: beasts.live[numberOfBeastList].length,
+    array.live[numberOfBeastList].push({
+      id: array.live[numberOfBeastList].length,
       id0: null,
       id1: null,
-      unixTime: unixTime + getNum(maxLiveTime),
+      time: time + getNum(maxTime),
       gen: [getNum(9), getNum(9), getNum(9), getNum(9), getNum(9), getNum(9)].join(''),
     });
   }
 
   console.table(Object
-      .keys(beasts.live[0][0])
+      .keys(array.live[0][0])
       .map(keys => ({
-        [keys]: beasts.live[0]
+        [keys]: array.live[0]
           .reduce((summ, el) =>
             ((summ < el[keys] && (summ += el[keys])), summ),
             ''
           )
-      }))); // log start beasts
+      }))); // log start array
+  
+  return array;
+};
+var getNum = num => Math.round(Math.random(num));
+
+const spread = (beasts, { maxLiveTime, spreadCountTimes, startCount }) => {
+  var time = 0;
+
+  makeStartBeasts(beasts, startCount, time, maxLiveTime);
 
   var spreadCount = 0;
   for (; spreadCount < spreadCountTimes; spreadCount++) {
-    unixTime++;
+    time++;
 
     for (var i = 0; i < beasts.live[1].length; i++) {
       if (beasts.live[1][i] === undefined) continue;
-      if (beasts.live[1][i].unixTime < unixTime) {
+      if (beasts.live[1][i].time < time) {
         beasts.death[1].push(beasts.live[1][i]);
         beasts.live[1].splice(i, 1);
         i--;
@@ -40,7 +45,7 @@ const spread = ({ maxLiveTime, spreadCountTimes, startCount }) => {
     var beastsLive_1Copy = JSON.parse(JSON.stringify(beasts.live[1]));
 
     for (var i = 0; i < beasts.live[0].length; i++) {
-      if (beasts.live[0][i].unixTime < unixTime) {
+      if (beasts.live[0][i].time < time) {
         beasts.death[0].push(beasts.live[0][i]);
         beasts.live[0].splice(i, 1);
         i--;
@@ -61,7 +66,7 @@ const spread = ({ maxLiveTime, spreadCountTimes, startCount }) => {
           id: beasts.live[numberOfBeastList].length,
           id0: parent.id,
           id1: partnerBeast.id,
-          unixTime: unixTime + getNum(maxLiveTime) + 1,
+          time: time + getNum(maxLiveTime) + 1,
           gen: parent.gen.split('').splice(0, 3).join('') + partnerBeast.gen.split('').splice(3, 6).join(''),
         });
       }
@@ -80,7 +85,10 @@ const convertNumbers = num => (num + '')
   .join('');
 
 const updateBeasts = () => {
-  const beasts = spread({ maxLiveTime: 3, spreadCountTimes: 20, startCount: 100 });
+  const beasts = spread(
+    { live: [[], []], death: [[], []] },
+    { maxLiveTime: 3, spreadCountTimes: 20, startCount: 100 }
+  );
 
   console.group('Beasts');
   console.info('Live - ' + convertNumbers(beasts.live[0].length + beasts.live[1].length));
