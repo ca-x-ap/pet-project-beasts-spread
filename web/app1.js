@@ -1,25 +1,25 @@
-var getNum = num => Math.round(Math.random(num));
-var makeStartBeasts = (array, count, time) => {
+const getNum = num => Math.round(Math.random(num));
+const makeStartBeasts = (array, count, time) => {
   for (var i = 0; i < count; i++) {
     var numberOfBeastList = getNum(1);
     array.live[numberOfBeastList].push({
       id: array.live[numberOfBeastList].length,
-      id0: null,
-      id1: null,
+      // id0: null,
+      // id1: null,
       time,
       gen: [getNum(9), getNum(9), getNum(9), getNum(9), getNum(9), getNum(9)].join(''),
     });
   }
 
-  console.table(Object
-      .keys(array.live[0][0])
-      .map(keys => ({
-        [keys]: array.live[0]
-          .reduce((summ, el) =>
-            ((summ < el[keys] && (summ += el[keys])), summ),
-            ''
-          )
-      }))); // log start array
+  // console.table(Object
+  //     .keys(array.live[0][0])
+  //     .map(keys => ({
+  //       [keys]: array.live[0]
+  //         .reduce((summ, el) =>
+  //           ((summ < el[keys] && (summ += el[keys])), summ),
+  //           ''
+  //         )
+  //     }))); // log start array
 
   return array;
 };
@@ -65,8 +65,10 @@ const spread = (beasts, { maxLiveTime = 2, spreadCountTimes = 22, startCount = 2
         var numberOfBeastList = getNum(1);
         beasts.live[numberOfBeastList].push({
           id: beasts.live[numberOfBeastList].length,
-          id0: parent.id,
-          id1: partnerBeast.id,
+          // id0: parent.id,
+          // id1: partnerBeast.id,
+					0: beasts.live[0][i],
+          1: beastsLive_1Copy[partnerNum],
           time,
           gen: (numberOfBeastList === 0 ? parent : partnerBeast).gen.substring(0, 3) + (numberOfBeastList === 0 ? partnerBeast : parent).gen.substring(3, 6),
         });
@@ -77,25 +79,22 @@ const spread = (beasts, { maxLiveTime = 2, spreadCountTimes = 22, startCount = 2
   return beasts;
 }
 
-const convertNumbers = num => (num + '')
-  .split('')
-  .reverse()
-  .reduce((accumulator, currentValue, currentIndex) => 
-    (accumulator.push(currentValue), (currentIndex + 1 % 3 === 0) && accumulator.push('_'), accumulator), [])
-  .reverse()
-  .join('');
+const convertNumbers = num => new Intl.NumberFormat().format(num).replaceAll(',', '_');
 
-const updateBeasts = name => {
+const updateBeasts = (__, name) => {
   const beasts = spread({ live: [[], []], death: [[], []] }, {});
 
   (() => {
-    name = `${ name || 'Beasts' } <${ new Date().getMinutes() }:${ new Date().getSeconds() }>`
+		const liveStat = [...JSON.parse(localStorage.getItem('liveStat')) || [], convertNumbers(beasts.live[0].length + beasts.live[1].length)];
+		localStorage.setItem('liveStat', JSON.stringify(liveStat));
+		const deathStat = [...JSON.parse(localStorage.getItem('deathStat')) || [], convertNumbers(beasts.death[0].length + beasts.death[1].length)];
+		localStorage.setItem('deathStat', JSON.stringify(deathStat));
+		const l$dStat = [...JSON.parse(localStorage.getItem('l$dStat')) || [], convertNumbers(beasts.live[0].length - beasts.death[0].length + beasts.live[1].length - beasts.death[1].length)];
+		localStorage.setItem('l$dStat', JSON.stringify(l$dStat));
+
+    name = `${ name || 'Beasts' } <${ new Date().getMinutes() }:${ new Date().getSeconds() }> | <${ liveStat[liveStat.length - 1] }|${ deathStat[deathStat.length - 1] }|${ l$dStat[l$dStat.length - 1] }>`;
     console.group(name);
-    console.table({ 
-      'Live': convertNumbers(beasts.live[0].length + beasts.live[1].length), 
-      'Death': convertNumbers(beasts.death[0].length + beasts.death[1].length)
-    });
-    console.table(beasts);
+    console.table({ ...beasts /*, LiveStat: liveStat, DeathStat: deathStat, 'Live - Death stat': l$dStat */ });
     console.groupEnd(name);
   }) ();
 
@@ -105,22 +104,23 @@ const updateBeasts = name => {
     divs[1].style.backgroundColor = 'red';
     divs[0].classList.add('container');
     divs[1].classList.add('container');
-  
+
     const addOnPage = (arr, index) => arr.forEach(beast => {
       const div = document.createElement('div');
       div.style.backgroundColor = '#' + beast.gen;
       div.classList.add('beast');
       divs[index].append(div);
     });
-  
+
     addOnPage(beasts.live[0].splice(0, beasts.live[0].length), 0);
     addOnPage(beasts.live[1].splice(0, beasts.live[1].length), 1);
-  
+
     document.body.innerHTML = '';
     document.body.append(...divs);
   }) // run ()
 };
 
 updateBeasts();
+update_info.addEventListener('click', updateBeasts, false);
 
 // setInterval(() => updateBeasts(), 1000);
