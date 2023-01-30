@@ -1,3 +1,30 @@
+<!-- 
+let index = 1;
+const convertTreeNode = object => Array.isArray(object)
+  ? object.map(element => ({
+    id: index++,
+    name: element,
+    children: typeof(object[element]) === "object"
+      ? convertTreeNode(object[element])
+      : []
+  }))
+  : Object.keys(object).map(element => ({
+    id: index++,
+    name: element,
+    children: typeof(object[element]) === "object"
+      ? convertTreeNode(object[element])
+      : []
+  }));
+axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.getters.TOKEN;
+axios.post('/portal/api/v1.0/permissions')
+  .then(response => {
+    const permissions = convertTreeNode({ ...response?.data?.permissions });
+    context.commit('SET_PERMISSIONS', permissions);
+  })
+  .catch(error => {
+    context.dispatch('LOGOUT');
+    context.dispatch('SET_ERROR_ALERT', error?.response?.data?.errors?.map(error => error.message) || [error] || ["Unknown server error"]);
+  }); -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -222,10 +249,10 @@ const setView = treeView => animals.append(Tree(treeView, {
   label: d => d.name,
   title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
   link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
-  width: 1152
+  width: screen.width
 }));
 
-setView(baseTree);
+// setView(baseTree);
 
 </script>
 <script>
@@ -262,7 +289,7 @@ const makeStartBeasts = (array, count, time) => {
   return array;
 };
 
-const spread = (beasts, { maxLiveTime = 2, spreadCountTimes = 10, startCount = 20, maxChildrenCount = 2 }) => {
+const spread = (beasts, { maxLiveTime = 2, spreadCountTimes = 10, startCount = 8, maxChildrenCount = 2 }) => {
   var time = new Date().getFullYear();
 
   makeStartBeasts(beasts, startCount, time);
@@ -358,15 +385,64 @@ const updateBeasts = (__, name, options = {}) => {
   }) // run ()
 
   // (() => {
-  //   // beasts.live[0]
-  //   // const beastsLive_0Length = beasts.live[0].length;
-  //   // for (let index = 0; index < beastsLive_0Length; index++) {
-  //   //   beasts.live[0][index];
-  //   //   beastsLive_0Length.push({
-  //   //     name: 
-  //   //   })
-  //   // }
-  //   // setView();
+    // let index = 1;
+    // const convertTreeNode = object => // Array.isArray(object)
+    //   // ? object.map(element => ({
+    //   //   // id: index++,
+    //   //   name: 'some ' + index, // object[element] ? object[element].gen : element,
+    //   //   children: typeof(object[element]) === "object"
+    //   //     ? convertTreeNode(object[element])
+    //   //     : []
+    //   // }))
+    //   object !== null ? Object.keys(object).map(element => ({
+    //     id: index++,
+    //     name: object[element] ? object[element]?.gen || null : null,
+    //     children: typeof(object[element]) === "object"
+    //       ? convertTreeNode(object[element])
+    //       : []
+    //   })) : [];
+    // axios.defaults.headers.post['Authorization'] = 'Bearer ' + context.getters.TOKEN;
+    // axios.post('/portal/api/v1.0/permissions')
+    //   .then(response => {
+    //     const permissions = convertTreeNode({ ...response?.data?.permissions });
+    //     context.commit('SET_PERMISSIONS', permissions);
+    //   })
+    //   .catch(error => {
+    //     context.dispatch('LOGOUT');
+    //     context.dispatch('SET_ERROR_ALERT', error?.response?.data?.errors?.map(error => error.message) || [error] || ["Unknown server error"]);
+    //   });
+    const beast = beasts.live[0][beasts.live[0].length - 1];
+
+    // let index = 1;
+    // const convertTreeNode = object => Object
+    //   .keys(object)
+    //   .map(key => ({
+    //     id: index++,
+    //     name: `${key} ${index}`, // object[key] ? object[key]?.gen || null : null,
+    //     children: typeof(object[key]) === "object" && object[key] !== null
+    //       ? convertTreeNode(object[key])
+    //       : []
+    //   }));
+
+    const convertTreeNode = object => ({
+      name: object.gen,
+      children: [0, 1].map(key => object[key] !== null && object[key] !== undefined && convertTreeNode(object[key]))
+    });
+
+    console.log(convertTreeNode(beast));
+    // const reverseTreeMap = object => object[0] !== null && object[1] !== null 
+    //   ? {
+    //     reverseTreeMap(object)
+    //   } 
+    //   : object
+    // const beastsLive_0Length = beasts.live[0].length;
+    // for (let index = 0; index < beastsLive_0Length; index++) {
+    //   beasts.live[0][index];
+    //   beastsLive_0Length.push({
+    //     name: 
+    //   })
+    // }
+    setView(convertTreeNode(beast));
   // }) ();
 
 	return beasts;
