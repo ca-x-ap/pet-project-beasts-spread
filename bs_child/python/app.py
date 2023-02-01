@@ -1,5 +1,6 @@
 import atexit
 import sys
+import time
 
 @atexit.register
 def end_func():
@@ -22,6 +23,7 @@ def on_startup():
 	start_count = 20
 
 	len_sys_argv = len(sys.argv) - 1
+
 	print(f'Starting { sys.argv[0] }')
 	if len_sys_argv == 0 or len_sys_argv == 1:
 		print('Need wrinte next arguments:')
@@ -48,11 +50,14 @@ def on_startup():
 		min_live_time: { min_live_time }
 		""")
 
+	start_time = time.time()
+
 	beasts = spread_beasts(min_live_time, live_time, start_count, years)
-	print('live ' + str(len(beasts[0][0])) + str(len(beasts[0][1])))
-	print('death ' + str(len(beasts[1][0])) + str(len(beasts[1][1])))
+
+	print("--- %s seconds ---" % (time.time() - start_time))
+	print('live ' + "{:_.0f}".format(len(beasts[0][0]) + len(beasts[0][1])))
+	print('Death ' + "{:_.0f}".format(len(beasts[1][0]) + len(beasts[1][1])))
 
 if __name__ == '__main__':
 	print('\n> START <')
-
 	on_startup()
