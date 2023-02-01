@@ -55,7 +55,11 @@ const spread = (beasts, { maxLiveTime = 2, spreadCountTimes = 10, startCount = 2
     for (var i = 0; i < beasts.live[0].length; i++) {
       if ((beasts.live[0][i].time + getRandNum(maxLiveTime, 1)) < time) {
         beasts.death[0].push(beasts.live[0][i]);
-        beasts.live[0].splice(i, 1);
+        beasts.live[0].splice(i, 1); // здесь я удаляю эллемент массива
+				/**
+				 * После удаления эллемента массива длина массива становиться length - 1
+				 * Соответсвено нужно уменьшьать итератор, который подставляеться как идекс элемента массива
+				 */
         i--;
         continue;
       }
