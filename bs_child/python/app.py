@@ -8,6 +8,7 @@ def end_func():
 
 def on_startup():
 	from utils.spread import spread_beasts
+	from utils.visualization import visualizate
 
 	# for x in fruits:
 	#   print(x)
@@ -61,12 +62,9 @@ def on_startup():
 		""")
 
 	start_time = time.time()
-
 	beasts = spread_beasts(min_live_time, live_time, start_count, years, min_children_count, children_count)
-
 	print("--- %s seconds ---" % (time.time() - start_time))
-	print('live ' + "{:_.0f}".format(len(beasts[0][0]) + len(beasts[0][1])))
-	print('Death ' + "{:_.0f}".format(len(beasts[1][0]) + len(beasts[1][1])))
+	visualizate(beasts)
 
 if __name__ == '__main__':
 	print('\n> START <')
