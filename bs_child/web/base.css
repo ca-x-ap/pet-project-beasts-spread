@@ -1,0 +1,59 @@
+body {
+	background-color: rgb(42, 42, 42);
+}
+/* .container, */
+.container-a {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+}
+.container-a {
+	justify-content: center;
+	border: 5px dotted darkcyan;
+	padding: 2rem 1.5rem;
+	align-items: flex-start;
+}
+#animals {
+	display: flex;
+	gap: 1rem;
+	padding: 1rem;
+}
+.beast {
+	opacity: .9;
+	width: 1rem;
+	height: 1rem;
+}
+#update_info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 8rem;
+	height: 3rem;
+	text-transform: uppercase;
+	font-size: 1.2rem;
+	background-color: #0000;
+	border: 1px solid white;
+	color: white;
+}
+
+.progress-9 {
+	--r1: 154%;
+	--r2: 68.5%;
+	width:60px;
+	height:60px;
+	border-radius: 50%;
+	background:
+		radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,#269af2 80%),
+		radial-gradient(var(--r1) var(--r2) at bottom,#269af2 79.5%,#0000 80%),
+		radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,#269af2 80%),
+		#ccc;
+	background-size: 50.5% 220%;
+	background-position: -100% 0%,0% 0%,100% 0%;
+	background-repeat:no-repeat;
+	animation:p9 2s infinite linear;
+}
+@keyframes p9 {
+		33%  {background-position:    0% 33% ,100% 33% ,200% 33% }
+		66%  {background-position: -100%  66%,0%   66% ,100% 66% }
+		100% {background-position:    0% 100%,100% 100%,200% 100%}
+}
