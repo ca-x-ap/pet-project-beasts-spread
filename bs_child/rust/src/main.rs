@@ -1,8 +1,49 @@
 use rand::*;
 
+// if let Some(pos) = vec.iter().position(|x| *x == needle) {
+//     vec.remove(pos);
+// }
+
+// fn check_beast(beast: &mut Beast, beasts: &mut Vec<Vec<Vec<Beast>>>, time: u32, min_live_time: u32, live_time: u32) {
+//     let random = rand::thread_rng().gen_range(min_live_time, live_time);
+//     if beast.birthday + random < time {
+//         beasts[1][0].push(beast.clone());
+//         beast = None;
+//     } else if beast.birthday + random < time {
+//         beasts[1][1].push(beast.clone());
+//         beast = None;
+//     }
+// }
+
+// for count in 0..years {
+//     time += count;
+//     beasts[0][0].shuffle();
+//     for (beast0, beast1) in beasts[0][0].iter().zip(beasts[0][1].iter()) {
+//         let current_children_count = rand::thread_rng().gen_range(min_children_count, children_count);
+//         for _ in 0..current_children_count {
+//             let list_number = rand::thread_rng().gen_range(0, 1);
+//             beasts[0][list_number].push({
+//                 id: beasts[0][list_number].len(),
+//                 id_0: beast0.id,
+//                 id_1: beast1.id,
+//                 birthday: time,
+//                 gen: format!("{} {}", beast0.gen.split(" ")[0], beast1.gen.split(" ")[1])
+//             });
+
+//             if beast0.birthday + rand::thread_rng().gen_range(min_live_time, live_time) < time {
+//                 beasts[1][0].push(beast0);
+//             }
+
+//             if beast1.birthday + rand::thread_rng().gen_range() {}
+// 		}
+// 	}
+// }
+
+
 fn spread_beasts(min_live_time: i32, live_time: i32, start_count: i32, years: i32, min_children_count: i32, children_count: i32) -> Vec<Vec<Vec<HashMap<&str, String>>>> {
 	let mut time = 2023;
 	let mut beasts = vec![vec![vec![], vec![]], vec![vec![], vec![]]];
+
 
 	// fn randomword(length: usize) -> String {
 	// 	let letters = "abcdefghijklmnopqrstuvwxyz";
