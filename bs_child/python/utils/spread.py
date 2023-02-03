@@ -62,20 +62,21 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 	return (childrens0, childrens1, death0, death1)
 
 def spread_beasts(min_live_time, live_time, start_count, years, min_children_count, children_count):
-		time = 2023
-		(beastsLive0, beastsLive1) = getStartBeasts(start_count, time)
-		beastsDeath0 = []
-		beastsDeath1 = []
+	time = 2023
+	(beastsLive0, beastsLive1) = getStartBeasts(start_count, time)
+	beastsDeath0 = []
+	beastsDeath1 = []
 
-		for count in range(years): # for index, element in enumerate(beasts):
-			time += count
-			random.shuffle(beastsLive0)
+	for count in range(years): # for index, element in enumerate(beasts):
+		time += 1
+		random.shuffle(beastsLive0)
 
-			(childrens0, childrens1, death0, death1) = beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, min_live_time, live_time)
+		(childrens0, childrens1, death0, death1) = beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, min_live_time, live_time)
+		print(f'time { str(time) } | child0 { str(len(childrens0)) } | child1 { str(len(childrens1)) } | dead0 { str(len(death0)) } | dead1 { str(len(death1)) }')
 
-			beastsLive0.extend(childrens0)
-			beastsLive1.extend(childrens1)
-			beastsDeath0.extend(death0)
-			beastsDeath1.extend(death1)
+		beastsLive0.extend(childrens0)
+		beastsLive1.extend(childrens1)
+		beastsDeath0.extend(death0)
+		beastsDeath1.extend(death1)
 
-		return (beastsLive0, beastsLive1, beastsDeath0, beastsDeath1)
+	return (beastsLive0, beastsLive1, beastsDeath0, beastsDeath1)
