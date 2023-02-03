@@ -31,6 +31,24 @@ def csv_reader():
 # display(data.head(10))
 
 def visualizate(beastsLive0, beastsLive1, beastsDeath0, beastsDeath1):
+	live = "{:_.0f}".format(len(beastsLive0) + len(beastsLive1))
+	death = "{:_.0f}".format(len(beastsDeath0) + len(beastsDeath1))
+	both = "{:_.0f}".format((len(beastsDeath0) + len(beastsDeath1)) - (len(beastsLive0) + len(beastsLive1)))
+
+	beasts0 = "{:_.0f}".format(len(beastsLive0))
+	beastsDeath0 = "{:_.0f}".format(len(beastsDeath0))
+	beastsBoth0 = "{:_.0f}".format(len(beastsDeath0) - len(beastsLive0))
+
+	beasts1 = "{:_.0f}".format(len(beastsLive1))
+	beastsDeath1 = "{:_.0f}".format(len(beastsDeath1))
+	beastsBoth1 = "{:_.0f}".format(len(beastsDeath1) - len(beastsLive1))
+
+	print(f"""
+		Total:    { live } | { death } | { both }
+		beasts#0: { beasts0 } | { beastsDeath0 } | { beastsBoth0 }
+		beasts#1: { beasts1 } | { beastsDeath1 } | { beastsBoth1 }
+		""")
+	# print('live ' + )
+	# print('Death ' + )
+
 	csv_reader()
-	print('live ' + "{:_.0f}".format(len(beastsLive0) + len(beastsLive1)))
-	print('Death ' + "{:_.0f}".format(len(beastsDeath0) + len(beastsDeath1)))
