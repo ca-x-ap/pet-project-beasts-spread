@@ -1,69 +1,63 @@
 use rand::*;
 
-fn main() {
-		let mut time = 2023;
-    struct Animal {
-        id: u32,
-        id_0: Option<u32>,
-        id_1: Option<u32>,
-        birthday: String,
-        gen: String,
-    }
-    let mut animals0 = vec![
-        Animal {
-            id: 0,
-            id_0: None,
-            id_1: None,
-            birthday: time, // "01/01/2020".to_string(),
-            gen: "M".to_string(),
-        },
-        Animal {
-            id: 1,
-            id_0: None, // Some(1)
-            id_1: None,
-            birthday: time, // "02/02/2020".to_string(),
-            gen: "F".to_string(),
-        },
-    ];
+fn spread_beasts(min_live_time: i32, live_time: i32, start_count: i32, years: i32, min_children_count: i32, children_count: i32) -> Vec<Vec<Vec<HashMap<&str, String>>>> {
+	let mut time = 2023;
+	let mut beasts = vec![vec![vec![], vec![]], vec![vec![], vec![]]];
 
-	let mut animals1 = vec![
-        Animal {
-            id: 0,
-            id_0: None,
-            id_1: None,
-            birthday: time, // "01/01/2020".to_string(),
-            gen: "M".to_string(),
-        },
-        Animal {
-            id: 1,
-            id_0: None, // Some(1)
-            id_1: None,
-            birthday: time, // "02/02/2020".to_string(),
-            gen: "F".to_string(),
-        },
-    ];
+	// fn randomword(length: usize) -> String {
+	// 	let letters = "abcdefghijklmnopqrstuvwxyz";
+	// 	(0..length).map(|_| {
+	// 		let idx = rand::thread_rng().gen_range(0, letters.len());
+	// 		letters.chars().nth(idx).unwrap()
+	// 	}).collect()
+	// }
 
-    // let base_count = 100;
-    // let count = rand::random::<u32>() % (animals.len() + 100 * base_count) as u32 + 999999;
+	for _ in 0..start_count/2 {
+		beasts[0][0].push(hashmap!{
+			"id" => beasts[0][0].len().to_string(),
+			"id_0" => None.to_string(),
+			"id_1" => None.to_string(),
+			"birthday" => time.to_string(),
+			// "gen" => format!("{} {}", randomword(6), randomword(6)) });
+		})
+		beasts[0][1].push(hashmap!{
+			"id" => beasts[0][1].len().to_string(),
+			"id_0" => None.to_string(),
+			"id_1" => None.to_string(),
+			"birthday" => time.to_string(),
+			// "gen" => format!("{} {}", randomword(6), randomword(6)) });
+		})
+	}
 
-    for _ in 0..5 {
-		time += time + _;
-		// random same list
-		for _ in 0..animals.len() {
-			animals.push(Animal {
-				id: animals.len() as u32 + 1, // id - последний + 1
-				father_id: // Some(rand::random::<u32>() % animals.len() as u32 + 1), // father_id - случайный id из уже существующих
-				mother_id: // Some(rand::random::<u32>() % animals.len() as u32 + 1), // mother_id - то же
-				birthday: time,
-				gen: "M".to_string(), // gen - M or F (cлучайный)
-			});
+	for count in 0..years {
+		time += count;
+		beasts[0][0].shuffle();
+
+		for (beast0, beast1) in beasts[0][0].iter().zip(beasts[0][1].iter()) {
+			let current_children_count = rand::thread_rng().gen_range(min_children_count, children_count);
+			for _ in 0..current_children_count {
+				let list_number = rand::thread_rng().gen_range(0, 1);
+				beasts[0][list_number].push({
+					id: beasts[0][list_number].len(),
+					id_0: beast0.id,
+					id_1: beast1.id,
+					birthday: time,
+					// gen: format!("{} {}", beast0.gen.split(" ")[0], beast1.gen.split(" ")[1])
+				});
+
+				if beast0.birthday + rand::thread_rng().gen_range(min_live_time, live_time) < time {
+					beasts[1][0].push(beast0);
+					beasts[0][0].remove(beast0);
+				}
+				if beast1.birthday + rand::thread_rng().gen_range(min_live_time, live_time) < time {
+					beasts[1][1].push(beast1);
+					beasts[0][1].remove(beast0);
+				}
+			}
 		}
-    }
+	}
+}
 
-    // println!("Animals list:"); //выводим результат
+fn main() {
 
-    // for animal in &animals {
-    // 		println!("{:#?}", animal);
-    // }
-    println!("Animals list:{}", animals.len()); //выводим результат
 }

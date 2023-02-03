@@ -48,7 +48,5 @@ def visualizate(beastsLive0, beastsLive1, beastsDeath0, beastsDeath1):
 		beasts#0: { beasts0 } | { beastsDeath0 } | { beastsBoth0 }
 		beasts#1: { beasts1 } | { beastsDeath1 } | { beastsBoth1 }
 		""")
-	# print('live ' + )
-	# print('Death ' + )
 
 	csv_reader()
