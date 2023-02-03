@@ -30,7 +30,7 @@ def csv_reader():
 # data = pd.read_csv("tips.csv")
 # display(data.head(10))
 
-def visualizate(data):
+def visualizate(beastsLive0, beastsLive1, beastsDeath0, beastsDeath1):
 	csv_reader()
-	print('live ' + "{:_.0f}".format(len(data[0][0]) + len(data[0][1])))
-	print('Death ' + "{:_.0f}".format(len(data[1][0]) + len(data[1][1])))
+	print('live ' + "{:_.0f}".format(len(beastsLive0) + len(beastsLive1)))
+	print('Death ' + "{:_.0f}".format(len(beastsDeath0) + len(beastsDeath1)))

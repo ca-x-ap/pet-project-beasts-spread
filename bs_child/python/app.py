@@ -18,7 +18,7 @@ def on_start():
 
 	print("--- %s seconds ---" % (time.time() - start_time))
 
-	visualizate(beasts)
+	visualizate(*beasts)
 
 if __name__ == '__main__':
 	on_start()
