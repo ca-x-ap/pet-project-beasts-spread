@@ -1,4 +1,5 @@
 import random, string # import uuid # uuid.uuid4() # os.urandom(n)
+import time as T
 
 def getStartBeasts(start_count, time):
 	def randomword(length):
@@ -34,6 +35,7 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 	childrens1 = []
 	death0 = []
 	death1 = []
+	start_time = T.time()
 	for beast0, beast1 in zip(beastsLive0, beastsLive1):
 		current_children_count = random.randint(min_children_count, children_count)
 		for count in range(current_children_count):
@@ -59,7 +61,8 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 		if beast1['birthday'] + random.randint(min_live_time, live_time) < time:
 			death1.append(beast1)
 			del beast1
-	return (childrens0, childrens1, death0, death1)
+	seconds = T.time() - start_time
+	return (childrens0, childrens1, death0, death1, seconds)
 
 def spread_beasts(min_live_time, live_time, start_count, years, min_children_count, children_count):
 	time = 2023
@@ -71,8 +74,8 @@ def spread_beasts(min_live_time, live_time, start_count, years, min_children_cou
 		time += 1
 		random.shuffle(beastsLive0)
 
-		(childrens0, childrens1, death0, death1) = beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, min_live_time, live_time)
-		print(f'time { str(time) } | child0 { str(len(childrens0)) } | child1 { str(len(childrens1)) } | dead0 { str(len(death0)) } | dead1 { str(len(death1)) }')
+		(childrens0, childrens1, death0, death1, seconds) = beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, min_live_time, live_time)
+		print(f'Y{ str(years - count) }|S{ str(seconds)[:8] }|NOW{ str(time) }|CH0<{ str(len(childrens0)) }>|CH1<{ str(len(childrens1)) }>|D0<{ str(len(death0)) }>|D1<{ str(len(death1)) }>')
 
 		beastsLive0.extend(childrens0)
 		beastsLive1.extend(childrens1)
