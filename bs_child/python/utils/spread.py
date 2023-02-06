@@ -1,5 +1,6 @@
 import random, string # import uuid # uuid.uuid4() # os.urandom(n)
 import time as T
+from datetime import datetime
 
 def getStartBeasts(start_count, time):
 	def randomword(length):
@@ -7,7 +8,7 @@ def getStartBeasts(start_count, time):
 		return ''.join(random.choice(letters) for i in range(length))
 
 	def gen():
-		return randomword(random.randint(3, 8)) + ' ' +randomword(random.randint(3, 8))
+		return randomword(random.randint(3, 8)) + ' ' + randomword(random.randint(3, 8))
 
 	beastsLive0 = []
 	beastsLive1 = []
@@ -41,18 +42,18 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 		for count in range(current_children_count):
 			if random.randint(0, 1) == 0:
 				childrens0.append((
-					id:= len(beastsLive0) + len(childrens0),
-					id_0:= beast0[0],
-					id_1:= beast1[0],
-					birthday:= time,
+					len(beastsLive0) + len(childrens0),
+					beast0[0],
+					beast1[0],
+					time,
 					# 'gen':= beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
 				))
 			else:
 				childrens1.append((
-					id:= len(beastsLive0) + len(childrens1),
-					id_0:= beast0[0],
-					id_1:= beast1[0],
-					birthday:= time,
+					len(beastsLive0) + len(childrens1),
+					beast0[0],
+					beast1[0],
+					time,
 					# 'gen':= beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
 				))
 		if beast0[3] + random.randint(min_live_time, live_time) < time:
@@ -61,11 +62,11 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 		if beast1[3] + random.randint(min_live_time, live_time) < time:
 			death1.append(beast1)
 			del beast1
-	seconds = T.time() - start_time
-	return (childrens0, childrens1, death0, death1, seconds)
+
+	return (childrens0, childrens1, death0, death1, seconds:= T.time() - start_time)
 
 def spread_beasts(min_live_time, live_time, start_count, years, min_children_count, children_count):
-	time = 2023
+	time = datetime.now().year
 	(beastsLive0, beastsLive1) = getStartBeasts(start_count, time)
 	beastsDeath0 = []
 	beastsDeath1 = []
