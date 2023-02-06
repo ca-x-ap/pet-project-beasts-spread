@@ -13,20 +13,20 @@ def getStartBeasts(start_count, time):
 	beastsLive1 = []
 
 	for _ in range(int(start_count / 2)):
-		beastsLive0.append({
-			'id': len(beastsLive0),
-			'id_0': None,
-			'id_1': None,
-			'birthday': time,
-			'gen': gen()
-		})
-		beastsLive1.append({
-			'id': len(beastsLive1),
-			'id_0': None,
-			'id_1': None,
-			'birthday': time,
-			'gen': gen()
-		})
+		beastsLive0.append((
+			id:= len(beastsLive0),
+			id_0:= None,
+			id_1:= None,
+			birthday:= time,
+			# gen:= gen()
+		))
+		beastsLive1.append((
+			id:= len(beastsLive1),
+			id_0:= None,
+			id_1:= None,
+			birthday:= time,
+			# gen:= gen()
+		))
 
 	return (beastsLive0, beastsLive1)
 
@@ -40,25 +40,25 @@ def beastes(beastsLive0, beastsLive1, time, min_children_count, children_count, 
 		current_children_count = random.randint(min_children_count, children_count)
 		for count in range(current_children_count):
 			if random.randint(0, 1) == 0:
-				childrens0.append({
-					'id': len(beastsLive0) + len(childrens0),
-					'id_0': beast0['id'],
-					'id_1': beast1['id'],
-					'birthday': time,
-					# 'gen': beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
-				})
+				childrens0.append((
+					id:= len(beastsLive0) + len(childrens0),
+					id_0:= beast0[0],
+					id_1:= beast1[0],
+					birthday:= time,
+					# 'gen':= beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
+				))
 			else:
-				childrens1.append({
-					'id': len(beastsLive0) + len(childrens1),
-					'id_0': beast0['id'],
-					'id_1': beast1['id'],
-					'birthday': time,
-					# 'gen': beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
-				})
-		if beast0['birthday'] + random.randint(min_live_time, live_time) < time:
+				childrens1.append((
+					id:= len(beastsLive0) + len(childrens1),
+					id_0:= beast0[0],
+					id_1:= beast1[0],
+					birthday:= time,
+					# 'gen':= beast0['gen'].split(" ")[0] + ' ' + beast1['gen'].split(" ")[1]
+				))
+		if beast0[3] + random.randint(min_live_time, live_time) < time:
 			death0.append(beast0)
 			del beast0
-		if beast1['birthday'] + random.randint(min_live_time, live_time) < time:
+		if beast1[3] + random.randint(min_live_time, live_time) < time:
 			death1.append(beast1)
 			del beast1
 	seconds = T.time() - start_time
